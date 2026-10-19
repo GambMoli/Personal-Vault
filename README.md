@@ -1,6 +1,6 @@
 # Personal Vault
 
-App personal todo-en-uno para Android (y cualquier navegador), con 5 módulos:
+App personal todo-en-uno **nativa para Android (APK)**, con 5 módulos:
 
 | Módulo | Para qué sirve |
 |---|---|
@@ -14,60 +14,64 @@ El detalle de cada módulo (funcionalidades y modelo de datos) está en [`docs/M
 
 ---
 
-## Stack recomendado (100 % gratis para uso personal)
+## Stack recomendado (100 % gratis)
 
 | Capa | Tecnología | Por qué | Costo |
 |---|---|---|---|
-| Frontend | **React + Vite + TypeScript** como **PWA** | Se instala en Android desde Chrome ("Agregar a pantalla de inicio"), funciona offline, y también sirve en el PC. Un solo código. | Gratis |
-| UI | Tailwind CSS + shadcn/ui | Rápido de construir, se ve bien en móvil | Gratis |
-| Backend / BD | **Supabase** (Postgres + Auth + Storage + Edge Functions) | Base de datos real, login, seguridad por fila (RLS), API automática | Plan free: 500 MB BD, 1 GB storage |
-| Hosting | **Vercel** o **Cloudflare Pages** | Deploy automático en cada push a GitHub, HTTPS, dominio `*.vercel.app` | Gratis |
-| IA (módulo ideas) | Claude API (Haiku) desde una Edge Function de Supabase | Genera ideas relacionadas con las tuyas | Centavos al mes (o desactivado = gratis) |
-| APK opcional | **Capacitor** | Si más adelante quieres un `.apk` real con notificaciones nativas, envuelve la misma PWA | Gratis |
+| App | **Flutter (Dart)** | Genera un APK nativo, UI fluida, hot reload para desarrollar rápido, paquetes para todo lo que necesitamos | Gratis |
+| Base de datos | **SQLite local** con [`drift`](https://pub.dev/packages/drift) | Los datos viven en el teléfono: funciona sin internet, es instantáneo y no depende de ningún servidor que se pause o cobre | Gratis |
+| Notificaciones | `flutter_local_notifications` | Recordatorios nativos (tareas, pagos de tarjeta, productos por vencer) aunque la app esté cerrada | Gratis |
+| Gráficas | `fl_chart` | Progreso de entrenamiento, gastos por categoría | Gratis |
+| Respaldo | Exportar/importar la BD (archivo `.json`/`.db`) a Google Drive o almacenamiento del teléfono, automático semanal | Si pierdes o cambias el teléfono no pierdes nada | Gratis |
+| IA (módulo ideas) | Claude API (Haiku) llamada desde la app; la API key se ingresa en Ajustes y se guarda cifrada con `flutter_secure_storage` (no va dentro del APK) | Genera ideas relacionadas con las tuyas | Centavos al mes (o desactivado = gratis) |
+| Build del APK | **GitHub Actions** | En cada push a `main` compila el APK y lo publica como *Release*; lo descargas e instalas desde el teléfono | Gratis |
 
-**Por qué PWA y no app nativa al inicio:** no necesitas Play Store (25 USD), no compilas APKs, cada cambio que hagas se refleja al instante en el celular, y la usas igual desde el computador. Si luego necesitas algo nativo (widgets, notificaciones más fiables), Capacitor reutiliza el 100 % del código.
+**Cómo la instalas:** abres la página de *Releases* del repo en el teléfono, descargas el `.apk` y lo instalas (Android pedirá permitir "instalar apps de fuentes desconocidas" una vez). No hace falta Play Store.
 
-> ⚠️ Supabase pausa los proyectos free tras ~7 días sin actividad. Usándola a diario no pasa; si ocurre, se reactiva con un clic. Se puede añadir un cron gratuito (GitHub Actions) que haga un ping semanal.
+**Por qué local y no en la nube:** al ser solo para tu teléfono, una base local es lo más simple, rápido y realmente gratis para siempre. Si en el futuro quieres sincronizar con otro dispositivo, se puede añadir Supabase como sincronización opcional sin rehacer la app.
 
-### Alternativa evaluada
-- **Expo (React Native) + Supabase**: más "nativa", pero los builds de APK (EAS) tienen cola/límites en el plan free y cada cambio requiere recompilar. Recomendable solo si las notificaciones nativas son críticas desde el día 1.
+### Alternativas según lo que sepas programar
+- **Kotlin + Jetpack Compose + Room**: la opción "oficial" de Android, máximo rendimiento; más código que Flutter.
+- **React Native (Expo) + expo-sqlite**: si te sientes más cómodo con JavaScript/TypeScript. El APK se compila igual de gratis con `expo prebuild` + Gradle en GitHub Actions.
 
 ---
 
-## Estructura propuesta del repo
+## Estructura propuesta del repo (Flutter)
 
 ```
 Personal-Vault/
-├── apps/
-│   └── web/                  # PWA (React + Vite)
-│       ├── src/
-│       │   ├── modules/
-│       │   │   ├── finanzas/
-│       │   │   ├── entrenamiento/
-│       │   │   ├── tareas/
-│       │   │   ├── ideas/
-│       │   │   └── cocina/
-│       │   ├── components/   # UI compartida
-│       │   ├── lib/          # cliente Supabase, utilidades
-│       │   └── app/          # rutas, layout, navegación inferior
-│       └── public/manifest.webmanifest
-├── supabase/
-│   ├── migrations/           # SQL de tablas por módulo
-│   └── functions/
-│       └── sugerir-ideas/    # Edge Function que llama a la IA
+├── lib/
+│   ├── main.dart
+│   ├── app/                  # tema, rutas, navegación inferior
+│   ├── core/
+│   │   ├── db/               # base de datos drift (tablas + DAOs)
+│   │   ├── notifications/
+│   │   └── backup/
+│   └── modules/
+│       ├── finanzas/
+│       ├── entrenamiento/
+│       ├── tareas/
+│       ├── ideas/
+│       └── cocina/
+│           ├── data/         # tablas y consultas del módulo
+│           ├── logic/        # estado (Riverpod)
+│           └── ui/           # pantallas y widgets
+├── android/
+├── test/
 ├── docs/
 │   └── MODULOS.md
-└── .github/workflows/        # CI + ping semanal a Supabase
+└── .github/workflows/
+    └── build-apk.yml         # compila y publica el APK
 ```
 
 ---
 
 ## Roadmap
 
-1. **Fase 0 – Base**: scaffold PWA, login con Supabase (solo tu usuario), navegación inferior por módulos, deploy en Vercel.
-2. **Fase 1 – Tareas**: el más simple; valida todo el flujo (CRUD, offline, notificaciones web).
+1. **Fase 0 – Base**: proyecto Flutter, base de datos local, navegación inferior por módulos, tema claro/oscuro, workflow que genera el APK.
+2. **Fase 1 – Tareas**: el más simple; valida todo el flujo (CRUD, notificaciones locales).
 3. **Fase 2 – Finanzas**: cuentas, movimientos, tarjetas, metas, dashboard de saldo.
 4. **Fase 3 – Entrenamiento**: registro diario, catálogo de ejercicios, gráficas de progreso.
 5. **Fase 4 – Cocina**: inventario, consumo, predicción de duración, lista de compras → se conecta con Tareas.
 6. **Fase 5 – Code con Gabo**: banco de ideas + sugerencias con IA.
-7. **Fase 6 – Extras**: exportar a CSV, respaldo automático, APK con Capacitor, widgets.
+7. **Fase 6 – Extras**: respaldo automático a Google Drive, exportar a CSV, widgets en la pantalla de inicio, bloqueo con huella.

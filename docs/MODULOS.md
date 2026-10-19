@@ -1,6 +1,6 @@
 # Módulos de Personal Vault
 
-Cada módulo tiene sus tablas en Supabase con columna `user_id` y políticas RLS (solo tú ves tus datos). Montos en `numeric(14,2)` con moneda por cuenta (por defecto COP).
+Todas las tablas viven en la base SQLite local del teléfono (drift). Montos guardados como enteros en centavos para evitar errores de redondeo, con moneda por cuenta (por defecto COP).
 
 ---
 
@@ -65,7 +65,7 @@ El saldo de cada cuenta se **calcula** (saldo_inicial + movimientos) mediante un
 - **Tareas** con fecha/hora de recordatorio, prioridad, repetición (diaria, semanal, mensual) y subtareas.
 - **Lista de mercado**: ítems con cantidad; marcar como comprado lo **pasa al inventario de Cocina** automáticamente.
 - Vista "Hoy" con lo que vence hoy y lo atrasado.
-- Notificaciones push web (PWA) para los recordatorios.
+- Notificaciones locales nativas para los recordatorios (funcionan con la app cerrada y sin internet).
 
 ### Modelo de datos
 | Tabla | Campos principales |
@@ -91,8 +91,8 @@ Se proponen 3 niveles, de gratis a más inteligente; se puede empezar por el 1 y
    - "Tienes 5 ideas de JavaScript en carrusel y 0 en reel → prueba un reel de JS".
    - Plantillas de series: si existe "5 errores en X", sugerir "5 errores en Y" para tus otros temas.
    - Temas que más guardados/likes te dieron → "haz parte 2".
-2. **IA generativa (recomendado)** — una Edge Function `sugerir-ideas` envía a Claude (modelo Haiku, muy barato) tus últimas ~30 ideas, las mejor valoradas y sus métricas, y pide 5 ideas nuevas en tu estilo, sin repetir. Devuelve JSON (título, formato, tags, hook) y con un clic la guardas en el banco. Costo estimado: < 1 USD/mes con uso normal. La API key queda como secreto en Supabase, nunca en el frontend.
-3. **Similitud con embeddings (avanzado)** — guardar un vector por idea (`pgvector`, incluido en Supabase) para detectar ideas duplicadas y agrupar temas, y darle a la IA contexto más preciso.
+2. **IA generativa (recomendado)** — la app envía a Claude (modelo Haiku, muy barato) tus últimas ~30 ideas, las mejor valoradas y sus métricas, y pide 5 ideas nuevas en tu estilo, sin repetir. Devuelve JSON (título, formato, tags, hook) y con un clic la guardas en el banco. Costo estimado: < 1 USD/mes con uso normal. La API key se ingresa en Ajustes y se guarda cifrada en el teléfono; nunca va dentro del APK ni del repo.
+3. **Similitud con embeddings (avanzado)** — guardar un vector por idea en la base local para detectar ideas duplicadas y agrupar temas, y darle a la IA contexto más preciso.
 
 ### Modelo de datos
 | Tabla | Campos principales |
