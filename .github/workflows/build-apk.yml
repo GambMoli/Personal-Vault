@@ -1,0 +1,80 @@
+name: Build APK
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      ES_MAIN: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.7"
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+
+      # Siempre la misma firma: si cambia, Android no deja actualizar la app
+      # sin desinstalarla (y se perderían los datos).
+      - name: Configurar firma
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            if [ "$ES_MAIN" = "true" ]; then
+              echo "::error::Faltan los secrets ANDROID_KEYSTORE_*; no se publica un APK sin firma fija."
+              exit 1
+            fi
+            echo "::warning::Sin secrets de firma: el APK de esta rama usa firma de debug (solo para probar)."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+          cat > android/key.properties <<EOF
+          storeFile=$RUNNER_TEMP/release.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
+      # El S24 Ultra (y casi todo Android actual) es arm64: APK más liviano.
+      - run: flutter build apk --release --target-platform android-arm64 --build-number ${{ github.run_number }}
+
+      - name: Renombrar APK
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          mv build/app/outputs/flutter-apk/app-release.apk "personal-vault-$VERSION-${{ github.run_number }}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: personal-vault-apk
+          path: personal-vault-*.apk
+
+      - name: Publicar release
+        if: env.ES_MAIN == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}-${{ github.run_number }}
+          name: Personal Vault ${{ env.VERSION }} (build ${{ github.run_number }})
+          body: Descarga el `.apk` desde el teléfono e instálalo encima de la versión anterior.
+          files: personal-vault-*.apk

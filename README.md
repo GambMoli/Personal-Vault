@@ -81,3 +81,27 @@ Personal-Vault/
 5. **Fase 4 – Cocina**: inventario, consumo, predicción de duración, lista de compras → se conecta con Tareas.
 6. **Fase 5 – Code con Gabo**: banco de ideas + motor de sugerencias (reglas locales + prompt para tu chat de IA).
 7. **Fase 6 – Extras**: respaldo automático a Google Drive, exportar a CSV, widgets en la pantalla de inicio, bloqueo con huella.
+
+---
+
+## Estado actual
+
+- ✅ Fase 0: app Flutter, base de datos local (drift), navegación por módulos, tema claro/oscuro, workflow de APK.
+- ✅ Fase 1: **Tareas**: vista *Hoy* (lo de hoy + atrasado), listas de tareas y de compras, agregar rápido, prioridad, fecha/hora, repetición diaria/semanal/mensual, recordatorios nativos, deshacer al borrar.
+- ⏳ Finanzas, Entrenamiento, Cocina e Ideas aparecen como "Próximamente".
+
+## Instalar en el teléfono
+
+1. **Una sola vez**, crear los secrets de firma en GitHub (*Settings → Secrets and variables → Actions → New repository secret*): `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`. La firma debe ser siempre la misma: si cambia, Android obliga a desinstalar la app y se pierden los datos. Guarda una copia del keystore fuera de GitHub.
+2. Cada push a `main` compila el APK y lo publica en **Releases**. En las demás ramas queda como *artifact* del workflow (pestaña *Actions*).
+3. En el S24 Ultra: desactivar el *Bloqueador automático*, descargar el `.apk` desde *Releases* e instalarlo. Las actualizaciones se instalan encima, sin perder datos.
+4. Al crear el primer recordatorio, aceptar el permiso de notificaciones, y poner la app en *Ajustes → Apps → Personal Vault → Batería → Sin restricciones*.
+
+## Desarrollo local
+
+```bash
+flutter pub get
+dart run build_runner build   # regenera lib/core/db/database.g.dart tras cambiar tablas
+flutter analyze && flutter test
+flutter build apk --release
+```
