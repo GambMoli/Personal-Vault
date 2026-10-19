@@ -1,6 +1,17 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 
+import '../../modules/cocina/data/tablas_cocina.dart';
+import '../../modules/entrenamiento/data/tablas_entrenamiento.dart';
+import '../../modules/finanzas/data/tablas_finanzas.dart';
+import '../../modules/ideas/data/tablas_ideas.dart';
+import 'semillas.dart';
+
+export '../../modules/cocina/data/tablas_cocina.dart';
+export '../../modules/entrenamiento/data/tablas_entrenamiento.dart';
+export '../../modules/finanzas/data/tablas_finanzas.dart';
+export '../../modules/ideas/data/tablas_ideas.dart';
+
 part 'database.g.dart';
 
 /// Tipos de lista del módulo Tareas.
@@ -57,17 +68,42 @@ class Tareas extends Table {
 
   /// Cantidad libre para listas de mercado ("2 kg", "1 docena").
   TextColumn get cantidad => text().nullable()();
+
+  /// Producto de Cocina asociado (al marcarlo comprado se suma al inventario).
+  IntColumn get productoId => integer().nullable().references(
+    Productos,
+    #id,
+    onDelete: KeyAction.setNull,
+  )();
   DateTimeColumn get completadaEn => dateTime().nullable()();
   DateTimeColumn get creadaEn => dateTime().withDefault(currentDateAndTime)();
 }
 
-@DriftDatabase(tables: [Listas, Tareas])
+@DriftDatabase(
+  tables: [
+    Listas,
+    Tareas,
+    Cuentas,
+    Categorias,
+    Tarjetas,
+    Movimientos,
+    GastosFijos,
+    Metas,
+    Deudas,
+    Ejercicios,
+    Sesiones,
+    Series,
+    Productos,
+    MovimientosCocina,
+    Ideas,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor])
     : super(executor ?? driftDatabase(name: 'personal_vault'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -89,6 +125,31 @@ class AppDatabase extends _$AppDatabase {
           orden: const Value(1),
         ),
       );
+      await sembrarModulos(this);
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        // v2: módulos Finanzas, Entrenamiento, Cocina e Ideas.
+        for (final tabla in <TableInfo>[
+          productos,
+          movimientosCocina,
+          cuentas,
+          categorias,
+          tarjetas,
+          gastosFijos,
+          movimientos,
+          metas,
+          deudas,
+          ejercicios,
+          sesiones,
+          series,
+          ideas,
+        ]) {
+          await m.createTable(tabla);
+        }
+        await m.addColumn(tareas, tareas.productoId);
+        await sembrarModulos(this);
+      }
     },
     beforeOpen: (details) async {
       await customStatement('PRAGMA foreign_keys = ON');

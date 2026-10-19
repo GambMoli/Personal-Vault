@@ -4,6 +4,14 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+/// Rangos de ids de notificación por origen, para que no se pisen.
+abstract final class IdsNotificacion {
+  static const tareas = 0;
+  static const gastosFijos = 1000000;
+  static const tarjetas = 2000000;
+  static const vencimientosCocina = 3000000;
+}
+
 /// Recordatorios locales. La interfaz permite usar una versión vacía en tests.
 abstract interface class NotificationService {
   Future<void> programar({

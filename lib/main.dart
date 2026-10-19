@@ -6,6 +6,7 @@ import 'app/app.dart';
 import 'core/db/database.dart';
 import 'core/notifications/notification_service.dart';
 import 'core/providers.dart';
+import 'modules/finanzas/data/finanzas_repository.dart';
 import 'modules/tareas/data/tareas_repository.dart';
 
 Future<void> main() async {
@@ -15,7 +16,9 @@ Future<void> main() async {
   final db = AppDatabase();
   final notificaciones = await LocalNotificationService.inicializar();
   // Por si el sistema borró las alarmas (reinstalación, actualización...).
-  await TareasRepository(db, notificaciones).reprogramarTodos();
+  await notificaciones.cancelarTodas();
+  await TareasRepository(db, notificaciones).programarTodos();
+  await FinanzasRepository(db, notificaciones).programarTodos();
 
   runApp(
     ProviderScope(

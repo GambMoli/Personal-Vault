@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../modules/finanzas/ui/finanzas_screen.dart';
 import '../modules/tareas/ui/tareas_screen.dart';
 import 'proximamente.dart';
 
@@ -40,7 +41,7 @@ const _modulos = [
     'Finanzas',
     Icons.account_balance_wallet_outlined,
     Icons.account_balance_wallet,
-    Proximamente('Finanzas', Icons.account_balance_wallet),
+    FinanzasScreen(),
   ),
   _Modulo(
     'Entreno',

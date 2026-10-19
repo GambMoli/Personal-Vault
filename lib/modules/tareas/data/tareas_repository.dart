@@ -178,9 +178,9 @@ class TareasRepository {
         .go();
   }
 
-  /// Reprograma todos los recordatorios pendientes (al abrir la app).
-  Future<void> reprogramarTodos() async {
-    await _notificaciones.cancelarTodas();
+  /// Programa todos los recordatorios pendientes (al abrir la app, después
+  /// de cancelar todos).
+  Future<void> programarTodos() async {
     final tareas = await (_db.select(
       _db.tareas,
     )..where((t) => t.recordar.equals(true) & t.completadaEn.isNull())).get();
