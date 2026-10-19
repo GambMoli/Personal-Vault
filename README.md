@@ -97,6 +97,17 @@ Personal-Vault/
 3. En el S24 Ultra: desactivar el *Bloqueador automático*, descargar el `.apk` desde *Releases* e instalarlo. Las actualizaciones se instalan encima, sin perder datos.
 4. Al crear el primer recordatorio, aceptar el permiso de notificaciones, y poner la app en *Ajustes → Apps → Personal Vault → Batería → Sin restricciones*.
 
+## Ver la app en el Mac mientras se desarrolla (hot reload)
+
+En vez de instalar el APK cada vez, `flutter run` deja la app corriendo y aplica los cambios en ~1 s (`r` = hot reload, `R` = reiniciar, `q` = salir).
+
+1. Instalar herramientas: `brew install --cask flutter android-studio`. Abrir Android Studio una vez para que instale el SDK y luego `flutter doctor --android-licenses` y `flutter doctor`.
+2. **Emulador**: Android Studio → *More Actions → Virtual Device Manager → Create device* (por ejemplo, Pixel 9 Pro con imagen *arm64* si el Mac es Apple Silicon).
+3. **O el S24 por Wi-Fi**: activar *Opciones de desarrollador → Depuración inalámbrica*, luego `adb pair <ip>:<puerto>` y `adb connect <ip>:<puerto>`.
+4. Desde el repo: `flutter pub get` y luego `flutter run`.
+
+> `flutter run` instala una versión de desarrollo con otra firma. Si el APK de *Releases* ya está instalado, Android pedirá desinstalarlo, y se borran sus datos.
+
 ## Desarrollo local
 
 ```bash
