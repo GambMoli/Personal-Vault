@@ -64,8 +64,9 @@ class _FormMovimientoState extends ConsumerState<_FormMovimiento> {
 
   Future<void> _guardar(EstadoFinanzas estado) async {
     final monto = parseDinero(_monto.text);
-    if (monto == null || monto <= 0)
+    if (monto == null || monto <= 0) {
       return avisar(context, 'Escribe un monto válido');
+    }
 
     int? cuenta;
     int? destino;
@@ -77,8 +78,9 @@ class _FormMovimientoState extends ConsumerState<_FormMovimiento> {
         } else if (_pagaCon.startsWith('c:')) {
           cuenta = int.parse(_pagaCon.substring(2));
         }
-        if (cuenta == null && tarjeta == null)
+        if (cuenta == null && tarjeta == null) {
           return avisar(context, 'Elige con qué pagaste');
+        }
       case TipoMovimiento.ingreso:
         cuenta = _cuentaId;
         if (cuenta == null) return avisar(context, 'Elige la cuenta');
@@ -91,8 +93,9 @@ class _FormMovimientoState extends ConsumerState<_FormMovimiento> {
       case TipoMovimiento.pagoTarjeta:
         cuenta = _cuentaId;
         tarjeta = _tarjetaId;
-        if (cuenta == null || tarjeta == null)
+        if (cuenta == null || tarjeta == null) {
           return avisar(context, 'Elige cuenta y tarjeta');
+        }
     }
     final usaCategoria =
         _tipo == TipoMovimiento.gasto || _tipo == TipoMovimiento.ingreso;
@@ -781,8 +784,9 @@ class _FormDeudaState extends ConsumerState<_FormDeuda> {
   Future<void> _guardar() async {
     final persona = _persona.text.trim();
     final monto = parseDinero(_monto.text);
-    if (persona.isEmpty || monto == null || monto <= 0)
+    if (persona.isEmpty || monto == null || monto <= 0) {
       return avisar(context, 'Completa persona y monto');
+    }
     await ref
         .read(finanzasRepositoryProvider)
         .guardarDeuda(

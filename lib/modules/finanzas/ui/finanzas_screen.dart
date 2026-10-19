@@ -173,8 +173,9 @@ class _ResumenTab extends ConsumerWidget {
                   : TextButton(
                       onPressed: () async {
                         await repo.registrarFijo(f.fijo);
-                        if (context.mounted)
+                        if (context.mounted) {
                           avisar(context, '${f.fijo.descripcion} registrado');
+                        }
                       },
                       child: const Text('Pagado'),
                     ),
@@ -652,8 +653,9 @@ class _MetasTab extends ConsumerWidget {
                               context,
                               'Aportar a ${m.nombre}',
                             );
-                            if (monto != null && monto > 0)
+                            if (monto != null && monto > 0) {
                               await repo.aportarMeta(m, monto);
+                            }
                           },
                         ),
                       ),
@@ -702,8 +704,9 @@ class _MetasTab extends ConsumerWidget {
                           context,
                           'Abono: ${d.persona}',
                         );
-                        if (monto != null && monto > 0)
+                        if (monto != null && monto > 0) {
                           await repo.abonarDeuda(d, monto);
+                        }
                       },
                     ),
               onTap: () => abrirDeuda(context, deuda: d),
