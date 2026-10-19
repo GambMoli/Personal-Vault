@@ -84,15 +84,17 @@ El saldo de cada cuenta se **calcula** (saldo_inicial + movimientos) mediante un
 - Fecha de publicación + calendario de contenido.
 - Métricas manuales al publicar (likes, guardados, alcance) para saber qué funciona.
 
-### Cómo predecir nuevas ideas (recomendación)
-Se proponen 3 niveles, de gratis a más inteligente; se puede empezar por el 1 y crecer:
+### Cómo predecir nuevas ideas (sin gastar dinero)
+Todas las opciones son gratis. El plan es combinar la 1 (siempre activa) con la 2, y dejar la 3 y la 4 como opcionales. La app define un "proveedor de sugerencias" intercambiable, así que se puede pasar de una opción a otra sin rehacer el módulo.
 
-1. **Reglas sin IA (gratis)** — combinaciones a partir de tus tags y formatos:
-   - "Tienes 5 ideas de JavaScript en carrusel y 0 en reel → prueba un reel de JS".
-   - Plantillas de series: si existe "5 errores en X", sugerir "5 errores en Y" para tus otros temas.
-   - Temas que más guardados/likes te dieron → "haz parte 2".
-2. **IA generativa (recomendado)** — la app envía a Claude (modelo Haiku, muy barato) tus últimas ~30 ideas, las mejor valoradas y sus métricas, y pide 5 ideas nuevas en tu estilo, sin repetir. Devuelve JSON (título, formato, tags, hook) y con un clic la guardas en el banco. Costo estimado: < 1 USD/mes con uso normal. La API key se ingresa en Ajustes y se guarda cifrada en el teléfono; nunca va dentro del APK ni del repo.
-3. **Similitud con embeddings (avanzado)** — guardar un vector por idea en la base local para detectar ideas duplicadas y agrupar temas, y darle a la IA contexto más preciso.
+1. **Motor de reglas local (gratis, sin internet, siempre activo)**: sugerencias a partir de tus propios datos:
+   - **Huecos**: "Tienes 5 ideas de JavaScript en carrusel y 0 en reel → prueba un reel de JS".
+   - **Plantillas de series**: si existe "5 errores en X", sugerir "5 errores en Y" para tus otros temas. Incluye un catálogo de formatos probados (errores comunes, X vs Y, mito o realidad, truco en 30 s, antes/después, entrevista técnica, roadmap…) que se cruzan con tus tags.
+   - **Lo que funcionó**: los temas con más guardados o likes reciben la sugerencia "haz la parte 2" o "llévalo a otro formato".
+   - **Temas olvidados**: tags que no tocas hace más de 30 días.
+2. **"Pídeselo a tu chat de IA" (gratis, recomendado)**: un botón arma automáticamente un prompt con tus últimas ideas, las mejor valoradas y su estilo, y lo **comparte** a la app de IA que ya usas gratis (Claude, ChatGPT, Gemini) o lo copia al portapapeles. La respuesta viene en una lista con formato fijo; la pegas de vuelta en la app, que la convierte en ideas para guardar con un clic. No usa API key ni tiene costo.
+3. **API con plan gratuito (opcional)**: algunos proveedores, como Google Gemini API o Groq, ofrecen un plan gratuito con límite de peticiones, más que suficiente para unas pocas sugerencias al día. Pegas la key en Ajustes (se guarda cifrada en el teléfono) y las sugerencias salen con un botón, sin copiar y pegar. Advertencias: los planes gratuitos pueden cambiar o desaparecer, y en algunos el proveedor puede usar lo que envías para entrenar sus modelos. Para ideas de contenido público eso no suele ser un problema, pero hay que saberlo.
+4. **IA dentro del teléfono (opcional, gratis y offline)**: un modelo pequeño que corre en el propio dispositivo. Puede ser el del sistema (Gemini Nano vía ML Kit, solo en teléfonos compatibles) o uno descargable (Gemma vía MediaPipe, de unos 0,5 a 1,5 GB). No necesita internet ni cuenta, pero depende de qué tan potente sea tu teléfono y las ideas salen de menor calidad que en las opciones 2 y 3.
 
 ### Modelo de datos
 | Tabla | Campos principales |

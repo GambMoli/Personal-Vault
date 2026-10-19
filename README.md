@@ -23,7 +23,7 @@ El detalle de cada módulo (funcionalidades y modelo de datos) está en [`docs/M
 | Notificaciones | `flutter_local_notifications` | Recordatorios nativos (tareas, pagos de tarjeta, productos por vencer) aunque la app esté cerrada | Gratis |
 | Gráficas | `fl_chart` | Progreso de entrenamiento, gastos por categoría | Gratis |
 | Respaldo | Exportar/importar la BD (archivo `.json`/`.db`) a Google Drive o almacenamiento del teléfono, automático semanal | Si pierdes o cambias el teléfono no pierdes nada | Gratis |
-| IA (módulo ideas) | Claude API (Haiku) llamada desde la app; la API key se ingresa en Ajustes y se guarda cifrada con `flutter_secure_storage` (no va dentro del APK) | Genera ideas relacionadas con las tuyas | Centavos al mes (o desactivado = gratis) |
+| Sugerencias (módulo ideas) | Motor de reglas local + botón "pídeselo a tu chat de IA" (comparte un prompt a tu app gratuita de Claude/ChatGPT/Gemini y pega la respuesta). Opcional: API con plan gratuito o modelo dentro del teléfono | Ideas nuevas basadas en las tuyas, sin pagar | Gratis |
 | Build del APK | **GitHub Actions** | En cada push a `main` compila el APK y lo publica como *Release*; lo descargas e instalas desde el teléfono | Gratis |
 
 **Cómo la instalas:** abres la página de *Releases* del repo en el teléfono, descargas el `.apk` y lo instalas (Android pedirá permitir "instalar apps de fuentes desconocidas" una vez). No hace falta Play Store.
@@ -73,5 +73,5 @@ Personal-Vault/
 3. **Fase 2 – Finanzas**: cuentas, movimientos, tarjetas, metas, dashboard de saldo.
 4. **Fase 3 – Entrenamiento**: registro diario, catálogo de ejercicios, gráficas de progreso.
 5. **Fase 4 – Cocina**: inventario, consumo, predicción de duración, lista de compras → se conecta con Tareas.
-6. **Fase 5 – Code con Gabo**: banco de ideas + sugerencias con IA.
+6. **Fase 5 – Code con Gabo**: banco de ideas + motor de sugerencias (reglas locales + prompt para tu chat de IA).
 7. **Fase 6 – Extras**: respaldo automático a Google Drive, exportar a CSV, widgets en la pantalla de inicio, bloqueo con huella.
