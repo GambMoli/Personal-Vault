@@ -30,6 +30,12 @@ El detalle de cada módulo (funcionalidades y modelo de datos) está en [`docs/M
 
 **Por qué local y no en la nube:** al ser solo para tu teléfono, una base local es lo más simple, rápido y realmente gratis para siempre. Si en el futuro quieres sincronizar con otro dispositivo, se puede añadir Supabase como sincronización opcional sin rehacer la app.
 
+### Notas para el dispositivo objetivo (Samsung Galaxy S24 Ultra)
+- **Instalar el APK**: desactivar temporalmente *Ajustes → Seguridad y privacidad → Bloqueador automático*, porque bloquea las apps instaladas fuera de las tiendas.
+- **Notificaciones fiables**: One UI cierra las apps en segundo plano de forma agresiva. Hay que poner la app en *Batería → Sin restricciones* y usar alarmas exactas (`SCHEDULE_EXACT_ALARM`) para los recordatorios.
+- **IA en el teléfono**: con 12 GB de RAM y Snapdragon 8 Gen 3 corre bien un modelo Gemma pequeño. La disponibilidad de Gemini Nano para apps de terceros se comprueba al abrir la app y no se da por hecha.
+- **Aprovechar**: widgets en la pantalla de inicio, desbloqueo con huella o rostro y modo oscuro (pantalla AMOLED).
+
 ### Alternativas según lo que sepas programar
 - **Kotlin + Jetpack Compose + Room**: la opción "oficial" de Android, máximo rendimiento; más código que Flutter.
 - **React Native (Expo) + expo-sqlite**: si te sientes más cómodo con JavaScript/TypeScript. El APK se compila igual de gratis con `expo prebuild` + Gradle en GitHub Actions.
