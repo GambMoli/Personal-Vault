@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../modules/entrenamiento/ui/entrenamiento_screen.dart';
 import '../modules/finanzas/ui/finanzas_screen.dart';
 import '../modules/tareas/ui/tareas_screen.dart';
 import 'proximamente.dart';
@@ -47,7 +48,7 @@ const _modulos = [
     'Entreno',
     Icons.fitness_center_outlined,
     Icons.fitness_center,
-    Proximamente('Entrenamiento', Icons.fitness_center),
+    EntrenamientoScreen(),
   ),
   _Modulo(
     'Tareas',
