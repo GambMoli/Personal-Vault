@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '../modules/cocina/ui/cocina_screen.dart';
 import '../modules/entrenamiento/ui/entrenamiento_screen.dart';
 import '../modules/finanzas/ui/finanzas_screen.dart';
 import '../modules/tareas/ui/tareas_screen.dart';
@@ -62,12 +63,7 @@ const _modulos = [
     Icons.lightbulb,
     Proximamente('Code con Gabo', Icons.lightbulb),
   ),
-  _Modulo(
-    'Cocina',
-    Icons.kitchen_outlined,
-    Icons.kitchen,
-    Proximamente('Cocina', Icons.kitchen),
-  ),
+  _Modulo('Cocina', Icons.kitchen_outlined, Icons.kitchen, CocinaScreen()),
 ];
 
 class HomeShell extends StatefulWidget {

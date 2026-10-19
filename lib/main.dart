@@ -6,6 +6,7 @@ import 'app/app.dart';
 import 'core/db/database.dart';
 import 'core/notifications/notification_service.dart';
 import 'core/providers.dart';
+import 'modules/cocina/data/cocina_repository.dart';
 import 'modules/finanzas/data/finanzas_repository.dart';
 import 'modules/tareas/data/tareas_repository.dart';
 
@@ -19,6 +20,7 @@ Future<void> main() async {
   await notificaciones.cancelarTodas();
   await TareasRepository(db, notificaciones).programarTodos();
   await FinanzasRepository(db, notificaciones).programarTodos();
+  await CocinaRepository(db, notificaciones).programarTodos();
 
   runApp(
     ProviderScope(

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import '../../../core/db/database.dart';
 import '../../../core/notifications/notification_service.dart';
+import '../../cocina/data/cocina_repository.dart';
 import 'recurrencia.dart';
 
 class ListaConPendientes {
@@ -155,6 +156,13 @@ class TareasRepository {
         siguiente != null
             ? TareasCompanion(vence: Value(siguiente))
             : TareasCompanion(completadaEn: Value(ahora)),
+      );
+    }
+    if (tarea.productoId != null) {
+      await sincronizarCompraDeMercado(
+        _db,
+        tarea.productoId!,
+        comprado: tarea.completadaEn == null,
       );
     }
     await _sincronizarRecordatorio(tarea.id);
