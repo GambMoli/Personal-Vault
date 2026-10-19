@@ -84,11 +84,43 @@ Personal-Vault/
 
 ---
 
-## Estado actual
+## Estado actual (v1.1.0)
 
-- ✅ Fase 0: app Flutter, base de datos local (drift), navegación por módulos, tema claro/oscuro, workflow de APK.
-- ✅ Fase 1: **Tareas**: vista *Hoy* (lo de hoy + atrasado), listas de tareas y de compras, agregar rápido, prioridad, fecha/hora, repetición diaria/semanal/mensual, recordatorios nativos, deshacer al borrar.
-- ⏳ Finanzas, Entrenamiento, Cocina e Ideas aparecen como "Próximamente".
+Todos los datos viven en el teléfono (SQLite). Los recordatorios son notificaciones nativas.
+
+- ✅ **Tareas**: vista *Hoy* (lo de hoy + lo atrasado), listas de tareas y de compras, agregar rápido, prioridad, fecha y hora, repetición diaria/semanal/mensual, recordatorios y deshacer al borrar.
+- ✅ **Finanzas**:
+  - Cuentas por banco y tarjetas de crédito con cupo, deuda, día de corte y día de pago.
+  - Movimientos: gasto (con cuenta o con tarjeta, a cuotas), ingreso, transferencia y pago de tarjeta.
+  - Gastos fijos del mes, con recordatorio y botón "Pagado".
+  - Presupuesto por categoría con alertas al 80 % y al 100 %.
+  - Metas de ahorro: dónde está el dinero y cuánto ahorrar al mes.
+  - Deudas y préstamos con abonos.
+  - Resumen con *Libre este mes* y patrimonio neto.
+- ✅ **Entrenamiento**:
+  - Sesión del día ("Martes 15 — Espalda") con ejercicio, máquina y series (reps × kg).
+  - "Repetir la última de Espalda" con los mismos pesos, y lo que levantaste la vez anterior.
+  - Gráfica de progreso con récord y volumen.
+  - Catálogo de ejercicios editable.
+- ✅ **Cocina**:
+  - Despensa por nevera, congelador y alacena.
+  - Botón "usé", compras y desechos.
+  - Estimación de cuántos días te dura cada producto según el consumo de los últimos 30 días.
+  - Vista *Por acabarse*, que agrega a la lista de mercado. Marcar un producto como comprado en Tareas lo suma a la despensa.
+  - Aviso el día antes de que un producto venza.
+- ✅ **Code con Gabo**:
+  - Banco de ideas con formato, temas, etapa (Idea → Guion → Grabando → Editando → Publicado), gancho, guion, código, caption y métricas.
+  - Sugerencias gratis, por dos vías:
+    - **Motor de reglas local**: huecos de formato, "parte 2" de lo que mejor funcionó, temas olvidados y plantillas probadas.
+    - **Chat de IA**: un prompt que compartes con tu chat gratuito (Claude, ChatGPT o Gemini). Luego pegas la respuesta y eliges qué ideas guardar.
+
+**Próximos pasos posibles**:
+- Respaldo automático (exportar e importar la base de datos).
+- Pantalla de inicio con un resumen de todos los módulos.
+- Recetas en Cocina.
+- IA dentro del teléfono (Gemma) para las ideas.
+- Widgets en la pantalla de inicio.
+- Temporizador de descanso en Entrenamiento.
 
 ## Instalar en el teléfono
 

@@ -4,8 +4,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../modules/cocina/ui/cocina_screen.dart';
 import '../modules/entrenamiento/ui/entrenamiento_screen.dart';
 import '../modules/finanzas/ui/finanzas_screen.dart';
+import '../modules/ideas/ui/ideas_screen.dart';
 import '../modules/tareas/ui/tareas_screen.dart';
-import 'proximamente.dart';
 
 class PersonalVaultApp extends StatelessWidget {
   const PersonalVaultApp({super.key});
@@ -57,12 +57,7 @@ const _modulos = [
     Icons.check_circle,
     TareasScreen(),
   ),
-  _Modulo(
-    'Ideas',
-    Icons.lightbulb_outline,
-    Icons.lightbulb,
-    Proximamente('Code con Gabo', Icons.lightbulb),
-  ),
+  _Modulo('Ideas', Icons.lightbulb_outline, Icons.lightbulb, IdeasScreen()),
   _Modulo('Cocina', Icons.kitchen_outlined, Icons.kitchen, CocinaScreen()),
 ];
 
@@ -74,7 +69,7 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  int _actual = 2; // Tareas es el primer módulo disponible.
+  int _actual = 2; // Arranca en Tareas, el del día a día.
 
   @override
   Widget build(BuildContext context) {
